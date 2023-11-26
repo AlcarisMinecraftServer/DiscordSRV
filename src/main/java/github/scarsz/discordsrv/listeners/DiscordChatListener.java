@@ -179,9 +179,14 @@ public class DiscordChatListener extends ListenerAdapter {
         Role topRole = !selectedRoles.isEmpty() ? selectedRoles.get(0) : null;
 
         // if there are attachments send them all as one message
+        // if (!event.getMessage().getAttachments().isEmpty()) {
+        //     for (Message.Attachment attachment : event.getMessage().getAttachments().subList(0, Math.min(event.getMessage().getAttachments().size(), 3))) {
+        //         if (handleMessageAddons(event, preEvent, selectedRoles, topRole, attachment.getUrl())) return;
+        //     }
+        // }
         if (!event.getMessage().getAttachments().isEmpty()) {
             for (Message.Attachment attachment : event.getMessage().getAttachments().subList(0, Math.min(event.getMessage().getAttachments().size(), 3))) {
-                if (handleMessageAddons(event, preEvent, selectedRoles, topRole, attachment.getUrl())) return;
+                if (handleMessageAddons(event, preEvent, selectedRoles, topRole, "（添付ファイルが存在します）")) return;
             }
         }
 
