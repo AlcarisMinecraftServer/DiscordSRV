@@ -50,6 +50,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static github.scarsz.discordsrv.util.MessageFormatResolver.getMessageFormat;
@@ -191,6 +192,14 @@ public class DiscordChatListener extends ListenerAdapter {
             for (Message.Attachment attachment : event.getMessage().getAttachments().subList(0, Math.min(event.getMessage().getAttachments().size(), 3))) {
                 if (handleMessageAddons(event, preEvent, selectedRoles, topRole, "（添付ファイルが存在します）")) return;
             }
+        }
+
+        String url_regex = "\\b(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
+        Pattern pattern = Pattern.compile(url_regex);
+        Matcher matcher = pattern.matcher(message);
+
+        while (matcher.find()) {
+            message = message.replace(matcher.group(), "(URL省略)");
         }
 
         // if there are stickers send them all as one message
